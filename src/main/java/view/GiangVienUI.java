@@ -71,15 +71,20 @@ public class GiangVienUI extends Application {
 
         // === Thiết lập layout các chức năng cho Giang viên sử dụng (bên trái app)
         // === Logo icon
-        Text logoTitle = new Text("BLUEDREAM");
-        logoTitle.setFont(Font.font("SansSerif", FontWeight.BOLD, 47));
+        Button btn = new Button();
+        btn.setGraphic(getTitileimg());
+        btn.setAlignment(Pos.CENTER);
+
         HBox logoTitleHb = new HBox(10);
         logoTitleHb.setPadding(new Insets(15,0,15,0));
-        logoTitleHb.getChildren().addAll(getlogoIcon(), logoTitle);
         logoTitleHb.getStyleClass().add("logoTitleHb");
+        logoTitleHb.getChildren().add(btn);
+
+
 
         VBox banner = new VBox();
         banner.getChildren().addAll(menubar, logoTitleHb);
+
 
 
         // === Chức năng
@@ -264,6 +269,15 @@ public class GiangVienUI extends Application {
         imgView = new ImageView(img);
         imgView.setFitHeight(35);
         imgView.setFitWidth(35);
+        return imgView;
+    }
+
+    public ImageView getTitileimg(){
+        input = getClass().getResourceAsStream("/images/Title.png");
+        img = new Image(input);
+        imgView = new ImageView(img);
+        imgView.setFitHeight(100);
+        imgView.setFitWidth(200);
         return imgView;
     }
 }
