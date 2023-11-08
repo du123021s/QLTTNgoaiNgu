@@ -1,0 +1,5 @@
+.addHvBtn, .deleteHvBtn, .updateHvBtn{
+    -fx-background-color: #03003f;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16px;
+}
