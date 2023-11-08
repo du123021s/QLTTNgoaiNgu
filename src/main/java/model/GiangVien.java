@@ -18,6 +18,7 @@ public class GiangVien {
     private String avatar;
     private int is_admin;
     private String trangthai;
+
     public GiangVien(){
         maGiangVien="";
         hoten="";
@@ -34,6 +35,28 @@ public class GiangVien {
         avatar="";
         is_admin=0;
         trangthai="";
+    }
+
+
+
+    public GiangVien(String maGiangVien, String hoten, String gioitinh, LocalDate ngaysinh,
+                     String diachi, String sdt, String email, String chuyennganh,
+                     int kinhnghiemgd, String matkhau, LocalDate ngaybatdau, LocalDate ngayketthuc, String avatar, int is_admin, String trangthai) {
+        this.maGiangVien = maGiangVien;
+        this.hoten = hoten;
+        this.gioitinh = gioitinh;
+        this.ngaysinh = ngaysinh;
+        this.diachi = diachi;
+        this.sdt = sdt;
+        this.email = email;
+        this.chuyennganh = chuyennganh;
+        this.kinhnghiemgd = kinhnghiemgd;
+        this.matkhau = matkhau;
+        this.ngaybatdau = ngaybatdau;
+        this.ngayketthuc = ngayketthuc;
+        this.avatar = avatar;
+        this.is_admin = is_admin;
+        this.trangthai = trangthai;
     }
 
     public String getMaGiangVien() {

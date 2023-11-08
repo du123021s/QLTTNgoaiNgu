@@ -18,10 +18,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectMySQLServer {
-    protected Connection connectDB = null ;
-    private final String url = "jdbc:mysql://localhost:3306/TrungTamNgoaiNgu";
+    public Connection connectDB = null ;
+    private final String url = "jdbc:mysql://localhost:3306/qlttnn";
     private final String user = "root";
-    private final String password = "Nhansu123@";
+    private final String password = "20052002";
 
     public ConnectMySQLServer(){
         try {
