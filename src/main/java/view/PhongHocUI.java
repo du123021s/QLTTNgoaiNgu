@@ -3,13 +3,12 @@ package view;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class GiangVienUI extends BorderPane {
+public class PhongHocUI extends BorderPane {
     private VBox rightVb;
 
-    public GiangVienUI(){
+    public PhongHocUI(){
 
 
         this.setCenter(rightVb);
     }
-
 }

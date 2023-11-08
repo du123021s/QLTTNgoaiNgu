@@ -17,6 +17,10 @@ public class TaiLieu {
         this.maLoaiTL = maLoaiTL;
     }
 
+    public TaiLieu() {
+
+    }
+
     public String getMaTaiLieu() {
         return maTaiLieu;
     }
