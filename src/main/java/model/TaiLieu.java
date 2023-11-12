@@ -1,17 +1,19 @@
 package model;
 
+import java.math.BigDecimal;
+
 public class TaiLieu {
-    public String maTaiLieu;
-    public String ten;
-    public float gia;
-    public String nguon;
-    public String mota;
-    public String maLoaiTL;
+    private String maTaiLieu;
+    private String ten;
+    private BigDecimal gia;
+    private String nguon;
+    private String mota;
+    private String maLoaiTL;
 
     public TaiLieu(String maTaiLieu, String ten, float gia, String nguon, String mota, String maLoaiTL) {
         this.maTaiLieu = maTaiLieu;
         this.ten = ten;
-        this.gia = gia;
+        this.gia = BigDecimal.valueOf(gia);
         this.nguon = nguon;
         this.mota = mota;
         this.maLoaiTL = maLoaiTL;
@@ -37,12 +39,12 @@ public class TaiLieu {
         this.ten = ten;
     }
 
-    public float getGia() {
+    public BigDecimal getGia() {
         return gia;
     }
 
     public void setGia(float gia) {
-        this.gia = gia;
+        this.gia = BigDecimal.valueOf(gia);
     }
 
     public String getNguon() {

@@ -8,6 +8,7 @@ module qlttnn_4_11 {
     requires java.desktop;
     requires java.sql;
     requires org.apache.commons.codec;
+    requires jbcrypt;
 
     opens view;
     exports view;

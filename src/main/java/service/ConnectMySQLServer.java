@@ -27,10 +27,10 @@ public class ConnectMySQLServer {
         try {
             connectDB = DriverManager.getConnection(url, user, password);
             if(connectDB != null){
-                JOptionPane.showMessageDialog(null, "Connection successful.");
+                System.out.println("Successful");
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Connection failed.\n" + e);
+            System.out.println("Failed");
         }
     }
 }

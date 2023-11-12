@@ -1,20 +1,30 @@
 package model;
 
 public class PhongHoc {
-    private String sttPhong;
+    private String maPhong;
+    private String trangthai;
+
+    public PhongHoc(String maPhong) {
+        this.maPhong = maPhong;
+    }
 
     public PhongHoc() {
+
     }
 
-    public PhongHoc(String sttPhong) {
-        this.sttPhong = sttPhong;
+    public String getMaPhong() {
+        return maPhong;
     }
 
-    public String getSttPhong() {
-        return sttPhong;
+    public void setMaPhong(String maPhong) {
+        this.maPhong = maPhong;
     }
 
-    public void setSttPhong(String sttPhong) {
-        this.sttPhong = sttPhong;
+    public String getTrangthai() {
+        return trangthai;
+    }
+
+    public void setTrangthai(String trangthai) {
+        this.trangthai = trangthai;
     }
 }

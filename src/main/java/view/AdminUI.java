@@ -170,7 +170,7 @@ public class AdminUI extends Application {
     private void moveToLichHocUI() {
         lichHocBtn.setOnAction(event -> {
             LichHocUI lichHocUI = new LichHocUI();
-            lichHocUI.setCenter(lichHocUI);
+            rootBp.setCenter(lichHocUI);
         });
     }
 

@@ -2,10 +2,9 @@ package service;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-import model.LoaiTaiLieu;
 import model.TaiLieu;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,24 +36,97 @@ public class TaiLieuService extends ConnectMySQLServer {
         return TLlist;
     }
 
-    public void createLTL(LoaiTaiLieu ltl) {
-        String maltl = ltl.getMaLoaiTL();
-        String ten = ltl.getTenTL();
+    public int createTL(TaiLieu taiLieu) {
+        String maTL = taiLieu.getMaTaiLieu();
+        String tenTL = taiLieu.getTen();
+        BigDecimal giaTL = taiLieu.getGia();
+        String nguon = taiLieu.getNguon();
+        String motaTL = taiLieu.getMota();
+        String maLTL = taiLieu.getMaLoaiTL();
 
         try {
-            String sql = "INSERT INTO `loaitailieu` VALUES (?,?);";
+            String sql = "INSERT INTO `tailieu` (maTaiLieu,ten,gia,nguon,mota,maLoaiTaiLieu) VALUES (?,?,?,?,?,?);";
             PreparedStatement ps = connectDB.prepareStatement(sql);
-            ps.setString(1, maltl);
-            ps.setString(2, ten);
-            ResultSet rs = ps.executeQuery(sql);
+            ps.setString(1, maTL);
+            ps.setString(2, tenTL);
+            ps.setBigDecimal(3, giaTL);
+            ps.setString(4,nguon);
+            ps.setString(5,motaTL);
+            ps.setString(6,maLTL);
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Successful");
-            alert.setHeaderText(null);
-            alert.setContentText("Create is successful!");
-            alert.showAndWait();
+            int rs = ps.executeUpdate();
+            return rs;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return 0;
+    }
+
+    public int deleteTaiLieu(TaiLieu taiLieu){
+        String maTL = taiLieu.getMaTaiLieu();
+        System.out.println(maTL);
+        try {
+            String sql = "DELETE FROM tailieu WHERE maTaiLieu = ?;";
+            PreparedStatement ps = connectDB.prepareStatement(sql);
+            ps.setString(1,maTL);
+            int rs = ps.executeUpdate();
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public ObservableList<TaiLieu> findTaiLieu(String val){
+        String sql = "SELECT * FROM tailieu WHERE maTaiLieu LIKE ? OR ten LIKE ?;";
+        ObservableList<TaiLieu> taiLieus = FXCollections.observableArrayList();
+        try{
+            PreparedStatement ps = connectDB.prepareStatement(sql);
+            ps.setString(1,"%"+val+"%");
+            ps.setString(2,"%"+val+"%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                TaiLieu taiLieu = new TaiLieu();
+
+                taiLieu.setMaTaiLieu(rs.getString(1));
+                taiLieu.setTen(rs.getString(2));
+                taiLieu.setGia(rs.getFloat(3));
+                taiLieu.setNguon(rs.getString(4));
+                taiLieu.setMota(rs.getString(5));
+                taiLieu.setMaLoaiTL(rs.getString("maLoaiTaiLieu"));
+
+                taiLieus.add(taiLieu);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return taiLieus;
+    }
+
+    public int updateTailieu(TaiLieu taiLieu){
+        String maTL = taiLieu.getMaTaiLieu();
+        String tenTL = taiLieu.getTen();
+        BigDecimal gia = taiLieu.getGia();
+        String nguonTL = taiLieu.getNguon();
+        String mota = taiLieu.getMota();
+        String maLTL = taiLieu.getMaLoaiTL();
+        String sql = "UPDATE tailieu SET ten= ?, gia= ?, nguon= ?, mota= ?, maLoaiTaiLieu= ? WHERE maTaiLieu = ?";
+        try {
+            PreparedStatement ps =connectDB.prepareStatement(sql);
+            ps.setString(1,tenTL);
+            ps.setBigDecimal(2,gia);
+            ps.setString(3,nguonTL);
+            ps.setString(4,mota);
+            ps.setString(5,maLTL);
+            ps.setString(6,maTL);
+            int rs = ps.executeUpdate();
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

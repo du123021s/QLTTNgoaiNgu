@@ -6,15 +6,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class LoaiTaiLieu {
-    public String maLoaiTL;
-    public String tenTL;
+    private String maLoaiTL;
+    private String ten;
 
     public LoaiTaiLieu() {
     }
 
     public LoaiTaiLieu(String maLoaiTL, String tenTL) {
         this.maLoaiTL = maLoaiTL;
-        this.tenTL = tenTL;
+        this.ten = tenTL;
     }
 
     public String getMaLoaiTL() {
@@ -25,11 +25,11 @@ public class LoaiTaiLieu {
         this.maLoaiTL = maLoaiTL;
     }
 
-    public String getTenTL() {
-        return tenTL;
+    public String getTen() {
+        return ten;
     }
 
-    public void setTenTL(String tenTL) {
-        this.tenTL = tenTL;
+    public void setTen(String ten) {
+        this.ten = ten;
     }
 }
