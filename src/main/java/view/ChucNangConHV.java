@@ -52,7 +52,7 @@ public class ChucNangConHV{
     public String valueTrangThaiHvCbb = "Chọn trạng thái";
 
     Label maLopLbl, sdtHvLbl, maHvLbl, emailHvLbl, tenHvLbl, diaChiHvLbl,
-                                            ngaySinhHvLbl, gioiTinhHvLbl;
+            ngaySinhHvLbl, gioiTinhHvLbl;
 
     public ChucNangConHV(){
         this.stage = stage;
@@ -119,7 +119,7 @@ public class ChucNangConHV{
          * Set status of student - HocVien ComboBox
          */
         trangThaiHvCbb.setPromptText(valueTrangThaiHvCbb);
-        trangThaiHvCbb.getItems().addAll("Hoạt động", "Tạm nghỉ", "Chưa đóng học phí");
+        trangThaiHvCbb.getItems().addAll("Hoạt động", "Nghỉ luôn", "Tạm nghỉ", "Kết thúc");
         trangThaiHvCbb.setOnAction(event -> {
             trangThaiHv = trangThaiHvCbb.getValue();
         });
@@ -260,9 +260,9 @@ public class ChucNangConHV{
         // =============== Root layout -------------------
         chucNangHvVb = new VBox();
         chucNangHvVb.setBorder(new Border(new BorderStroke(Color.YELLOWGREEN,
-                                                            BorderStrokeStyle.SOLID,
-                                                            CornerRadii.EMPTY,
-                                                            BorderWidths.DEFAULT)));
+                BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY,
+                BorderWidths.DEFAULT)));
         chucNangHvVb.getChildren().addAll(titleChucNangLbl, contentHb, statusLbl, btnHb);
         // ----------------------------------------------------------------------------------------
 

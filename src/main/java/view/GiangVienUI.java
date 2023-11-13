@@ -11,4 +11,5 @@ public class GiangVienUI extends BorderPane {
 
         this.setCenter(rightVb);
     }
+
 }
