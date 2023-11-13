@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 public class GiangVienService extends ConnectMySQLServer {
 
-    public ObservableList<GiangVien> getGiangVienList(){
+    public ObservableList<GiangVien> getGiangVienList() {
         String gioitinh;
         ObservableList<GiangVien> giangVienList = FXCollections.observableArrayList();
         try {
@@ -18,7 +18,7 @@ public class GiangVienService extends ConnectMySQLServer {
                     + "ngaybatdau, ngayketthuc, avatar, is_admin, trangthai FROM GiangVien;";
             PreparedStatement preState = connectDB.prepareStatement(sql);
             ResultSet resultSet = preState.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 GiangVien giangVien = new GiangVien();
                 LopHoc lopHoc = new LopHoc();
                 giangVien.setMaGiangVien(resultSet.getString(1));
@@ -44,31 +44,32 @@ public class GiangVienService extends ConnectMySQLServer {
 
                 giangVienList.add(giangVien);
             }
-        } catch (SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return giangVienList;
 
     }
+
     public int kiemTraGiangVien(String maGV) {
         try {
             String sql = "SELECT maGiangVien From GiangVien WHERE maGiangVien = ?;";
             PreparedStatement preState = connectDB.prepareStatement(sql);
 
             ResultSet result = preState.executeQuery();
-            if(result.next()) {
+            if (result.next()) {
                 return 1;
-            }else {
+            } else {
                 System.out.println("Không tìm thấy");
                 return 0;
             }
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return 0;
     }
 
-    public int dangKyGiangVienMoi(GiangVien giangVien){
+    public int dangKyGiangVienMoi(GiangVien giangVien) {
         String maGV = giangVien.getMaGiangVien();
         String hotenGV = giangVien.getHoten();
         String gioiTinh = giangVien.getGioitinh();
@@ -87,42 +88,42 @@ public class GiangVienService extends ConnectMySQLServer {
         PreparedStatement preState = null;
 
         System.out.println("DIA CHI: " + diaChiGV);
-        try{
+        try {
             connectDB.setAutoCommit(false);
             String sql = "INSERT INTO GiangVien(maGiangVien, hoten, gioitinh, ngaysinh, diachi," +
                     " sdt, email, chuyennganh, kinhnghiemgd, matkhau, ngaybatdau, ngayketthuc, avatar, is_admin, trangthai) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
             preState.setString(1, maGV);
             preState.setString(2, hotenGV);
-            preState.setString(3,gioiTinh);
-            preState.setDate(4,Date.valueOf(ngaySinhGV));
-            preState.setString(5,diaChiGV);
-            preState.setString(6,sdt);
-            preState.setString(7,email);
-            preState.setString(8,chuyenNganh);
-            preState.setInt(9,kinhNghiem);
+            preState.setString(3, gioiTinh);
+            preState.setDate(4, Date.valueOf(ngaySinhGV));
+            preState.setString(5, diaChiGV);
+            preState.setString(6, sdt);
+            preState.setString(7, email);
+            preState.setString(8, chuyenNganh);
+            preState.setInt(9, kinhNghiem);
             preState.setString(10, matkhau);
-            preState.setDate(11,Date.valueOf(ngayBD));
-            preState.setDate(12,Date.valueOf(ngayKT));
-            preState.setString(13,avatar);
-            preState.setInt(14,is_admin);
-            preState.setString(15,status);
+            preState.setDate(11, Date.valueOf(ngayBD));
+            preState.setDate(12, Date.valueOf(ngayKT));
+            preState.setString(13, avatar);
+            preState.setInt(14, is_admin);
+            preState.setString(15, status);
 
 
-        } catch ( SQLException e){
-            if (connectDB != null){
+        } catch (SQLException e) {
+            if (connectDB != null) {
                 try {
                     connectDB.rollback();
-                } catch (SQLException ex){
+                } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
             }
             e.printStackTrace();
         } finally {
-            if (connectDB!= null){
+            if (connectDB != null) {
                 try {
                     preState.close();
                     connectDB.close();
-                } catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
@@ -130,6 +131,7 @@ public class GiangVienService extends ConnectMySQLServer {
 
         return 0;
     }
+
     public int updateGiangVien(GiangVien giangVien) {
         String sql = "{CALL UpdateHocVien(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
@@ -181,18 +183,19 @@ public class GiangVienService extends ConnectMySQLServer {
         }
         return 0;
     }
-    public int deleteGiangVien(String maGV){
+
+    public int deleteGiangVien(String maGV) {
         String sql = "DELETE FROM GiangVien WHERE maGiangVien = ?;";
-        try(PreparedStatement call = connectDB.prepareStatement(sql)){
+        try (PreparedStatement call = connectDB.prepareStatement(sql)) {
             call.setString(1, maGV);
 
             call.executeUpdate();
             connectDB.setAutoCommit(false);
-            connectDB.commit() ;
+            connectDB.commit();
             return 1;
 
-        }catch (SQLException e){
-            if(connectDB != null){
+        } catch (SQLException e) {
+            if (connectDB != null) {
                 try {
                     connectDB.rollback();
                 } catch (SQLException ex) {
@@ -203,10 +206,11 @@ public class GiangVienService extends ConnectMySQLServer {
         }
         return 0;
     }
-    public ObservableList<GiangVien> searchHocVien(String content){
+
+    public ObservableList<GiangVien> searchGiangVien(String content) {
         String gioitinh;
         ObservableList<GiangVien> giangVienList = FXCollections.observableArrayList();
-        String addContent = '%'+content+'%';
+        String addContent = '%' + content + '%';
         String sql = "SELECT maGiangVien, hoten, gioitinh, ngaysinh, diachi, sdt, email, chuyennganh, kinhnghiemgd, matkhau, ngaybatdau," +
                 "ngayketthuc, avatar, is_admin, trangthai " +
                 "FROM GiangVien " +
@@ -225,25 +229,25 @@ public class GiangVienService extends ConnectMySQLServer {
                 "or avatar LIKE ?" +
                 "or is_admin LIKE ?" +
                 "or trangthai LIKE ?";
-        try( PreparedStatement preState = connectDB.prepareStatement(sql);){
-            for(int i=1; i<=3; i++){
+        try (PreparedStatement preState = connectDB.prepareStatement(sql);) {
+            for (int i = 1; i <= 3; i++) {
                 preState.setString(i, addContent);
             }
             preState.setDate(4, Date.valueOf(addContent));
-            for(int i=5 ; i<=8; i++){
+            for (int i = 5; i <= 8; i++) {
                 preState.setString(i, addContent);
             }
             preState.setInt(9, Integer.parseInt(addContent));
             preState.setString(10, addContent);
             preState.setDate(11, Date.valueOf(addContent));
-            preState.setDate(12,Date.valueOf(addContent));
+            preState.setDate(12, Date.valueOf(addContent));
             preState.setString(13, addContent);
             preState.setInt(14, Integer.parseInt(addContent));
             preState.setString(15, addContent);
 
             ResultSet resultSet = preState.executeQuery();
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 GiangVien giangVien = new GiangVien();
                 LopHoc lop = new LopHoc();
                 giangVien.setMaGiangVien(resultSet.getString(1));
@@ -273,10 +277,9 @@ public class GiangVienService extends ConnectMySQLServer {
                 giangVienList.add(giangVien);
             }
 
-        }catch (SQLException ex){
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return giangVienList;
     }
-    }
-
+}
