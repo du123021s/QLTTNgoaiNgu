@@ -98,4 +98,6 @@ public class LopHoc {
     public void setLichHoc(LichHoc lichHoc) {
         this.lichHoc = lichHoc;
     }
+    public String getMaGV(){return giangVien.getMaGiangVien();};
+    public String getMaKH(){return khoaHoc.getMaKH();}
 }
