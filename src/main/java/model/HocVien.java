@@ -1,5 +1,7 @@
 package model;
 
+import controller.HocVienController;
+
 import java.time.LocalDate;
 
 public class HocVien {
@@ -10,18 +12,16 @@ public class HocVien {
     private String sdtHV;
     private String emailHV;
     private String diaChiHV;
-    private String ngayDangKyHoc;
+    private LocalDate ngayDangKyHoc;
     private String trangThaiHV;
-    private String avatarHV;
+    private LopHoc maLop;
 
     public HocVien() {
     }
 
-    public HocVien(String maHV, String hocTenHV, String gioiTinhHV, LocalDate ngaySinhHV,
-                   String sdtHV, String emailHV, String diaChiHV, String ngayDangKyHoc,
-                   String trangThaiHV, String avatarHV) {
+    public HocVien(String maHV, String hoTenHV, String gioiTinhHV, LocalDate ngaySinhHV, String sdtHV, String emailHV, String diaChiHV, LocalDate ngayDangKyHoc, String trangThaiHV, LopHoc maLop) {
         this.maHV = maHV;
-        this.hoTenHV = hocTenHV;
+        this.hoTenHV = hoTenHV;
         this.gioiTinhHV = gioiTinhHV;
         this.ngaySinhHV = ngaySinhHV;
         this.sdtHV = sdtHV;
@@ -29,23 +29,20 @@ public class HocVien {
         this.diaChiHV = diaChiHV;
         this.ngayDangKyHoc = ngayDangKyHoc;
         this.trangThaiHV = trangThaiHV;
-        this.avatarHV = avatarHV;
+        this.maLop = maLop;
     }
 
-    public String getMaHV() {
-        return maHV;
-    }
 
     public void setMaHV(String maHV) {
         this.maHV = maHV;
     }
 
-    public String getHocTenHV() {
+    public String getHoTenHV() {
         return hoTenHV;
     }
 
-    public void setHocTenHV(String hocTenHV) {
-        this.hoTenHV = hocTenHV;
+    public void setHoTenHV(String hoTenHV) {
+        this.hoTenHV = hoTenHV;
     }
 
     public String getGioiTinhHV() {
@@ -88,11 +85,11 @@ public class HocVien {
         this.diaChiHV = diaChiHV;
     }
 
-    public String getNgayDangKyHoc() {
+    public LocalDate getNgayDangKyHoc() {
         return ngayDangKyHoc;
     }
 
-    public void setNgayDangKyHoc(String ngayDangKyHoc) {
+    public void setNgayDangKyHoc(LocalDate ngayDangKyHoc) {
         this.ngayDangKyHoc = ngayDangKyHoc;
     }
 
@@ -104,11 +101,31 @@ public class HocVien {
         this.trangThaiHV = trangThaiHV;
     }
 
-    public String getAvatarHV() {
-        return avatarHV;
+    public LopHoc getMaLop() {
+        return maLop;
     }
 
-    public void setAvatarHV(String avatarHV) {
-        this.avatarHV = avatarHV;
+    public void setMaLop(LopHoc maLop) {
+        this.maLop = maLop;
     }
+    public String getMaHV(){
+        return maHV;
+    }
+
+    @Override
+    public String toString() {
+        return "HocVien{" +
+                "maHV='" + maHV + '\'' +
+                ", hoTenHV='" + hoTenHV + '\'' +
+                ", gioiTinhHV='" + gioiTinhHV + '\'' +
+                ", ngaySinhHV=" + ngaySinhHV +
+                ", sdtHV='" + sdtHV + '\'' +
+                ", emailHV='" + emailHV + '\'' +
+                ", diaChiHV='" + diaChiHV + '\'' +
+                ", ngayDangKyHoc=" + ngayDangKyHoc +
+                ", trangThaiHV='" + trangThaiHV + '\'' +
+                ", maLop=" + maLop +
+                '}';
+    }
+
 }

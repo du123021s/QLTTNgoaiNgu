@@ -1,219 +1,398 @@
 package view;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.awt.*;
+import javafx.util.StringConverter;
+import model.HocVien;
+import model.LopHoc;
+import service.HocVienService;
+import service.LopHocService;
 import java.time.LocalDate;
 
-public class ChucNangConHV extends Application {
+public class ChucNangConHV{
+    private Stage stage;
+    public HocVien model;
+    public LopHoc lopHoc;
     private VBox chucNangHvVb;
-    private TextField maHvTxt, tenHvTxt, gioiTinhHvTxt,  sdtHvTxt, emailHvTxt, trangThaiHvTxt;
-    private TextArea diaChiHvTxt;
-    private LocalDate ngaySinhHv ;
-    private Button dangKyHvBtn;
-    DatePicker ngaySinhHvDatePicker, ngayDangKyHvDatePicker;
+    public Label statusLbl;
+    public LocalDate ngaySinhHv;
+    private HocVienService hocVienService;
 
-    private String font = "-fx-font-size:16px; ";
-    private Integer size = 32;
-    private Integer sizeWidth = 199;
-    private Label statusLbl = new Label();
+    // -------------------------------------------------
+    public Integer size = 32;
+    public Integer sizeWidth = 199;
+    public String font = "-fx-font-size:16px; ";
+    public String format = "-fx-background-color: #030063; -fx-text-fill: #FFFFFF;";
+    public String bg_red = "-fx-text-fill:#FFFFFF; -fx-background-color:#B1008C;";
+    public String titleFormat = "-fx-background-color:#030063; -fx-text-fill:#FFFFFF;-fx-font-weight:800;-fx-font-size:20px; ";
+    public String btnEffect1 = "-fx-background-color:#0000B4;-fx-text-fill:#FFFFFF;";
+    public String btnEffect2 = "-fx-background-color:#C80475;-fx-text-fill:#FFFFFF;";
 
-    private String format = "-fx-background-color: #030063; -fx-text-fill: #FFFFFF;";
-    private String bg_red = "-fx-text-fill:#FFFFFF; -fx-background-color: #E20825;";
+    public Label titleChucNangLbl;
+    public Button addHvBtn, clearBtn ;
+    public TextField maHvTxt, tenHvTxt, sdtHvTxt, emailHvTxt;
+    public TextArea diaChiHvTxt;
+    public ToggleGroup toggleGroup ;
+    public DatePicker ngaySinhHvDatePicker;
+    public RadioButton maleRadioBtn;
+    public RadioButton femaleRadioBtn;
+    public ComboBox<LopHoc> lopHocComboBox;
+    public ComboBox<String> trangThaiHvCbb;
 
-    private String titleFormat = "-fx-background-color: #030063; -fx-text-fill: #FFFFFF; -fx-font-weight:800;-fx-font-size:20px; ";
+    public String trangThaiHv;
+    public String selectedValue;
+    public String valueAdd = "Lưu";
+    public String valueClear = "Làm sạch";
+    public String valueLopHocCbb = "Chọn lớp";
+    public String valueTrangThaiHvCbb = "Chọn trạng thái";
 
-    public static void main(String[] agrs){launch(); }
-    @Override
-    public void start(Stage stage) throws Exception {
-        showWindow();
-    }
+    Label maLopLbl, sdtHvLbl, maHvLbl, emailHvLbl, tenHvLbl, diaChiHvLbl,
+            ngaySinhHvLbl, gioiTinhHvLbl;
 
-    void showWindow(){
+    public ChucNangConHV(){
+        this.stage = stage;
+        this.model = new HocVien();
+        this.lopHoc = new LopHoc();
+
+        titleChucNangLbl = new Label("Đăng Ký Học Viên Mới");
+
         maHvTxt = new TextField();
         tenHvTxt = new TextField();
         sdtHvTxt = new TextField();
         emailHvTxt = new TextField();
         diaChiHvTxt = new TextArea();
-        gioiTinhHvTxt = new TextField();
-        trangThaiHvTxt = new TextField();
-
+        trangThaiHvCbb = new ComboBox<>();
+        lopHocComboBox = new ComboBox<>();
         ngaySinhHvDatePicker = new DatePicker();
-        ngaySinhHvDatePicker.setPromptText("dd/MM/YYYY");
-        ngaySinhHvDatePicker.valueProperty().addListener((observable, oldValue, newValue)-> {
-            LocalDate localDate = LocalDate.now();
-            if(newValue != null && newValue.isBefore(localDate)){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Invalid Date");
-                alert.setHeaderText("Registration date expired. Please enter a valid registration date.");
-                alert.showAndWait();
-                ngaySinhHvDatePicker.setValue(null);
-            }else ngaySinhHv = newValue;
+        maleRadioBtn = new RadioButton("Nam");
+        femaleRadioBtn = new RadioButton("Nữ");
+
+
+        toggleGroup = new ToggleGroup();
+        System.out.println("Radio Button: " + maleRadioBtn.getText() );
+        femaleRadioBtn.setToggleGroup(toggleGroup);
+        maleRadioBtn.setToggleGroup(toggleGroup);
+
+        System.out.println("Radio Button 2: " + maleRadioBtn.getText() );
+        maLopLbl = new Label("Chọn Lớp: "); maLopLbl.setStyle(font);
+        sdtHvLbl = new Label("SĐT: "); sdtHvLbl.setStyle(font);
+        maHvLbl = new Label("Mã HV: ");  maHvLbl.setStyle(font);
+        emailHvLbl = new Label("Email: "); emailHvLbl.setStyle(font);
+        tenHvLbl = new Label("Họ Tên HV: "); tenHvLbl.setStyle(font);
+        diaChiHvLbl = new Label("Địa Chỉ: "); diaChiHvLbl.setStyle(font);
+        ngaySinhHvLbl = new Label("Ngày Sinh"); ngaySinhHvLbl.setStyle(font);
+        gioiTinhHvLbl = new Label("Giới Tính: "); gioiTinhHvLbl.setStyle(font);
+        Label trangThaiHvLbl = new Label("Trạng Thái: "); trangThaiHvLbl.setStyle(font);
+
+        // === ComboBox - LopHoc
+        LopHocService lopHocService = new LopHocService();
+        lopHocComboBox.getItems().addAll(lopHocService.hienThiDanhSachLop());
+        if(lopHocService.hienThiDanhSachLop() != null){
+            System.out.println("Co nha: " + lopHocService.hienThiDanhSachLop());
+        }else{
+            System.out.println("LOP CBB null");
+        }
+        lopHocComboBox.setPromptText(valueLopHocCbb);
+        lopHocComboBox.setOnAction((et)->{
+            lopHoc = lopHocComboBox.getValue();
+            System.out.println("LOP HOC: " + lopHoc.getMaLop() + " , " + lopHoc.getDsHocVien());
+        });
+        lopHocComboBox.setStyle(font);
+        lopHocComboBox.setConverter(new StringConverter<LopHoc>() {
+            @Override
+            public String toString(LopHoc lopHoc) {
+                return lopHoc.toString();
+            }
+            @Override
+            public LopHoc fromString(String string) {
+                // Nếu bạn muốn chuyển đổi từ chuỗi ngược lại thành đối tượng lớp học, bạn có thể triển khai phương thức này.
+                return null;
+            }
         });
 
-
-        ngayDangKyHvDatePicker = new DatePicker();
-        ngayDangKyHvDatePicker.setPromptText("dd/MM/YYYY");
-        ngayDangKyHvDatePicker.valueProperty().addListener((observable, oldValue, newValue)-> {
-            LocalDate localDate = LocalDate.now();
-            if(newValue != null && newValue.isBefore(localDate)){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Invalid Date");
-                alert.setHeaderText("Registration date expired. Please enter a valid registration date.");
-                alert.showAndWait();
-                ngayDangKyHvDatePicker.setValue(null);
-            }else ngaySinhHv = newValue;
+        /*
+         * Set status of student - HocVien ComboBox
+         */
+        trangThaiHvCbb.setPromptText(valueTrangThaiHvCbb);
+        trangThaiHvCbb.getItems().addAll("Hoạt động", "Nghỉ luôn", "Tạm nghỉ", "Kết thúc");
+        trangThaiHvCbb.setOnAction(event -> {
+            trangThaiHv = trangThaiHvCbb.getValue();
         });
+        trangThaiHvCbb.setStyle(font);
 
-
-        Label sdtHvLbl = new Label("SĐT: "); sdtHvLbl.setStyle(font);
-        Label maHvLbl = new Label("Mã HV: ");  maHvLbl.setStyle(font);
-        Label emailHvLbl = new Label("Email"); emailHvLbl.setStyle(font);
-        Label tenHvLbl = new Label("Họ Tên HV: "); tenHvLbl.setStyle(font);
-        Label diaChiHvLbl = new Label("Địa chỉ: "); diaChiHvLbl.setStyle(font);
-        Label ngaySinhHvLbl = new Label("Ngày Sinh"); ngaySinhHvLbl.setStyle(font);
-        Label gioiTinhHvLbl = new Label("Giới Tính: "); gioiTinhHvLbl.setStyle(font);
-        Label ngayDangKyHVLbl = new Label("Ngày ĐK: "); ngayDangKyHVLbl.setStyle(font);
-        Label trangThaiHvLbl = new Label("Trạng thái: "); trangThaiHvLbl.setStyle(font);
-
-        diaChiHvTxt.setPrefRowCount(7);
-        diaChiHvTxt.setPrefColumnCount(5);
 
         maHvLbl.prefWidthProperty().bind(tenHvLbl.widthProperty());
         sdtHvLbl.prefWidthProperty().bind(tenHvLbl.widthProperty());
+        maLopLbl.prefWidthProperty().bind(tenHvLbl.widthProperty());
         emailHvLbl.prefWidthProperty().bind(tenHvLbl.widthProperty());
         diaChiHvLbl.prefWidthProperty().bind(tenHvLbl.widthProperty());
         ngaySinhHvLbl.prefWidthProperty().bind(tenHvLbl.widthProperty());
         gioiTinhHvLbl.prefWidthProperty().bind(tenHvLbl.widthProperty());
-        ngayDangKyHVLbl.prefWidthProperty().bind(tenHvLbl.widthProperty());
         trangThaiHvLbl.prefWidthProperty().bind(tenHvLbl.widthProperty());
 
-        // ===== Căn chỉnh - Align ---------
-
-
+        // ===== Align - font - size ---------
+        maleRadioBtn.setStyle(font);
+        femaleRadioBtn.setStyle(font);
+        diaChiHvTxt.setPrefRowCount(7);
+        diaChiHvTxt.setPrefColumnCount(5);
         maHvTxt.setMinHeight(size); maHvTxt.setMinWidth(sizeWidth);
-        tenHvTxt.setMinHeight(size); tenHvTxt.setMinWidth(sizeWidth);
-        gioiTinhHvTxt.setMinHeight(size); gioiTinhHvTxt.setMinWidth(sizeWidth);
-        ngaySinhHvDatePicker.setMinHeight(size); ngaySinhHvDatePicker.setMinWidth(sizeWidth);
-        emailHvTxt.setMinHeight(size); emailHvTxt.setMinWidth(sizeWidth);
         sdtHvTxt.setMinHeight(size); sdtHvTxt.setMinWidth(sizeWidth);
+        tenHvTxt.setMinHeight(size); tenHvTxt.setMinWidth(sizeWidth);
+        emailHvTxt.setMinHeight(size); emailHvTxt.setMinWidth(sizeWidth);
         diaChiHvTxt.setMinHeight(size); diaChiHvTxt.setMinWidth(sizeWidth);
-        ngayDangKyHvDatePicker.setMinHeight(size); ngayDangKyHvDatePicker.setMinWidth(sizeWidth);
-        trangThaiHvTxt.setMinHeight(size); trangThaiHvTxt.setMinWidth(sizeWidth);
+        trangThaiHvCbb.setMinHeight(size); trangThaiHvCbb.setMinWidth(sizeWidth);
+        lopHocComboBox.setMinHeight(size); lopHocComboBox.setMinWidth(sizeWidth);
+        ngaySinhHvDatePicker.setMinHeight(size); ngaySinhHvDatePicker.setMinWidth(sizeWidth);
 
 
+        // === DatePicker - ngaySinh
+        ngaySinhHvDatePicker.setPromptText("dd/MM/YYYY");
+        ngaySinhHvDatePicker.valueProperty().addListener((observable, oldValue, newValue)-> {
+            LocalDate localDate = LocalDate.now();
+            if(newValue == null){
+                statusLbl.setText("Vui lòng lựa chọn ngày sinh.");
+            }else if (newValue.isBefore(localDate)){
+                ngaySinhHv = newValue;
+            }else{
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Ngày sinh không hợp lệ.");
+                alert.setHeaderText("Năm sinh phải nhỏ hơn năm hiện tại.");
+                alert.showAndWait();
+                ngaySinhHvDatePicker.setValue(null);
+            }
+
+        });
+
+        // Đặt sự kiện khi RadioButton được chọn
+        toggleGroup.selectedToggleProperty().addListener((observable, oldValue, selectedRadioButton) -> {
+            if (selectedRadioButton != null) {
+                RadioButton selected = (RadioButton) selectedRadioButton;
+                selectedValue = selected.getText();
+                System.out.println("RadioButton đã được chọn: " + selectedValue);
+            }
+        });
+
+
+        // === HBOX ------------------------------
         HBox maHvHb = new HBox();
         HBox tenHvHb = new HBox();
-        HBox gioiTinhHvHb = new HBox();
-        HBox ngaySinhHvHb = new HBox();
         HBox sdtHvHb = new HBox();
+        HBox maLopHvHb = new HBox();
         HBox emailHvHb = new HBox();
         HBox diaChiHvHb = new HBox();
-        HBox ngayDangKyHvHb = new HBox();
+        HBox gioiTinhHvHb = new HBox(10);
+        HBox ngaySinhHvHb = new HBox();
         HBox trangThaiHvHb = new HBox();
-
-        VBox leftVb = new VBox(10);
-        VBox rightVb = new VBox(10);
-        leftVb.setPadding(new Insets(25,0,10,10));
-        rightVb.setPadding(new Insets(25, 0, 10,50));
+        HBox ngayDangKyHvHb = new HBox();
 
         maHvHb.getChildren().addAll(maHvLbl,  maHvTxt);
         tenHvHb.getChildren().addAll(tenHvLbl, tenHvTxt);
         sdtHvHb.getChildren().addAll(sdtHvLbl, sdtHvTxt);
         emailHvHb.getChildren().addAll(emailHvLbl, emailHvTxt);
+        maLopHvHb.getChildren().addAll(maLopLbl, lopHocComboBox);
         diaChiHvHb.getChildren().addAll(diaChiHvLbl, diaChiHvTxt);
-        gioiTinhHvHb.getChildren().addAll(gioiTinhHvLbl, gioiTinhHvTxt);
+        gioiTinhHvHb.getChildren().addAll(gioiTinhHvLbl, maleRadioBtn, femaleRadioBtn);
+        trangThaiHvHb.getChildren().addAll(trangThaiHvLbl, trangThaiHvCbb);
         ngaySinhHvHb.getChildren().addAll(ngaySinhHvLbl, ngaySinhHvDatePicker);
-        trangThaiHvHb.getChildren().addAll(trangThaiHvLbl, trangThaiHvTxt);
-        ngayDangKyHvHb.getChildren().addAll(ngayDangKyHVLbl, ngayDangKyHvDatePicker);
 
+        // === B1. VBox ---------------------
+        VBox leftVb = new VBox(10);
+        VBox rightVb = new VBox(10);
+        leftVb.setPadding(new Insets(25,0,10,10));
+        rightVb.setPadding(new Insets(25, 0, 10,50));
 
         leftVb.getChildren().addAll(maHvHb, tenHvHb, gioiTinhHvHb, ngaySinhHvHb, sdtHvHb);
-        rightVb.getChildren().addAll(emailHvHb,ngayDangKyHvHb, trangThaiHvHb, diaChiHvHb);
+        rightVb.getChildren().addAll(emailHvHb, ngayDangKyHvHb, maLopHvHb, trangThaiHvHb, diaChiHvHb);
+
+        // === B2. Set VBox into HBox
+        HBox contentHb = new HBox();
+        contentHb.getChildren().addAll(leftVb, rightVb);
+        // -------------------------------------------------------------------------------------
 
 
-
-        Button addHvBtn = new Button("Lưu"); addHvBtn.setOnAction(event -> handleAddHv());
-        Button cancelBtn = new Button("Hủy"); cancelBtn.setOnAction(event -> handleCancel());
+        // === B1. Button --------------------------------------------
+        addHvBtn = new Button(valueAdd);
+        clearBtn = new Button(valueClear);
         addHvBtn.setStyle(format + font);
-        cancelBtn.setStyle(bg_red + font);
+        clearBtn.setStyle(bg_red + font);
 
+        // === Khoi tao sk
+//        addHvBtn.setOnAction(event -> {
+//            if(onLoadDataListener != null){
+//                onLoadDataListener.onLoadData();
+//            }
+//        });
+
+
+        // === B2. Set Button into HBox
         HBox btnHb = new HBox(30);
         btnHb.setAlignment(Pos.CENTER_RIGHT);
         btnHb.setPadding(new Insets(45, 50, 200,50));
-        btnHb.getChildren().addAll(addHvBtn, cancelBtn);
+        btnHb.getChildren().addAll(addHvBtn, clearBtn);
 
         HBox.setHgrow(addHvBtn, Priority.ALWAYS);
-        HBox.setHgrow(cancelBtn, Priority.ALWAYS);
+        HBox.setHgrow(clearBtn, Priority.ALWAYS);
         addHvBtn.setMaxWidth(Double.MAX_VALUE);
-        cancelBtn.setMaxWidth(Double.MAX_VALUE);
+        clearBtn.setMaxWidth(Double.MAX_VALUE);
+        // ----------------------------------------------------------------------------------------
 
-        HBox contentHb = new HBox();
-        contentHb.getChildren().addAll(leftVb, rightVb);
 
-        Label titleChucNangLbl = new Label("Đăng Ký Học Viên Mới");
+        // === Set title for interface --------------
         titleChucNangLbl.setStyle(titleFormat);
         titleChucNangLbl.setMinHeight(45);
         titleChucNangLbl.setAlignment(Pos.CENTER);
         titleChucNangLbl.setBorder(new Border(new BorderStroke(Color.YELLOWGREEN, BorderStrokeStyle.SOLID,
                 CornerRadii.EMPTY,BorderWidths.DEFAULT)));
+        // ---------------------------------------------------------------------------------------
 
+
+        // === Error Message --------------------
+        statusLbl = new Label();
         statusLbl.setMaxWidth(Double.MAX_VALUE);
         statusLbl.setWrapText(true);
+        // ---------------------------------------------------------------------------------------
 
-
+        // =============== Root layout -------------------
         chucNangHvVb = new VBox();
-        titleChucNangLbl.prefWidthProperty().bind(chucNangHvVb.widthProperty());
+        chucNangHvVb.setBorder(new Border(new BorderStroke(Color.YELLOWGREEN,
+                BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY,
+                BorderWidths.DEFAULT)));
         chucNangHvVb.getChildren().addAll(titleChucNangLbl, contentHb, statusLbl, btnHb);
-        chucNangHvVb.setBorder(new Border(new BorderStroke(Color.YELLOWGREEN, BorderStrokeStyle.SOLID,
-                CornerRadii.EMPTY,BorderWidths.DEFAULT)));
+        // ----------------------------------------------------------------------------------------
 
+        // === Set title equal root layout
+        titleChucNangLbl.prefWidthProperty().bind(chucNangHvVb.widthProperty());
+        // ----------------------------------------------------------------------------------------
+
+        // === Window ------------------------------------------------------------------------------
         Scene scene = new Scene(chucNangHvVb,677,450);
-
-        Stage stage = new Stage();
+        stage = new Stage();
         stage.setScene(scene);
+    }
+
+    public void show(){
+        changeColorBtn();
         stage.show();
     }
 
-    protected void handleCancel() {
+
+    public void getUpdateDataUI(){
+        String maLop = this.lopHocComboBox.getPromptText();
+        LopHoc lop = new LopHoc();
+        lop.setMaLop(maLop);
+
+        String trangThai = this.trangThaiHvCbb.getPromptText();
+
+        if("Nữ".equals(this.selectedValue)){
+            this.model.setGioiTinhHV("F");
+        }else{
+            this.model.setGioiTinhHV("M");
+        }
+        this.model.setMaHV(this.maHvTxt.getText());
+        this.model.setHoTenHV(this.tenHvTxt.getText());
+        this.model.setNgaySinhHV(ngaySinhHvDatePicker.getValue());
+        this.model.setSdtHV(this.sdtHvTxt.getText());
+        this.model.setEmailHV(this.emailHvTxt.getText());
+        this.model.setDiaChiHV(this.diaChiHvTxt.getText());
+
+        if(this.lopHocComboBox.getValue() == null){
+            this.model.setMaLop(lop);
+        }else{
+            this.model.setMaLop(this.lopHoc);
+        }
+
+        if(this.trangThaiHvCbb.getValue() == null){
+            this.model.setTrangThaiHV(trangThai);
+        }else{
+            this.model.setTrangThaiHV(this.trangThaiHvCbb.getValue());
+        }
     }
-
-    protected void handleAddHv() {
-        System.out.println("cÓ Nha.");
-        statusLbl.setStyle("-fx-text-fill:red; -fx-font-size:16px");
-        statusLbl.setPadding(new Insets(15));
-        statusLbl.setText(""); // Đặt lại nội dung của statusLbl trước khi kiểm tra
-
-        if (maHvTxt.getText().isEmpty()) {
-            statusLbl.setText("Mã HV không được để trống.");
-        }else if (tenHvTxt.getText().isEmpty()) {
-            statusLbl.setText("Tên HV không được để trống.");
-        }else if (gioiTinhHvTxt.getText().isEmpty()) {
-            statusLbl.setText("Giới tính không được để trống.");
-        }else if (ngaySinhHvDatePicker.getValue() == null) {
-            statusLbl.setText("Vui lòng lựa chọn ngày sinh.");
-        }else if (sdtHvTxt.getText().isEmpty()) {
-            statusLbl.setText("SĐT không được để trống.");
-        }else if (emailHvTxt.getText().isEmpty()) {
-            statusLbl.setText("Email không được để trống.");
-        }else if (ngayDangKyHvDatePicker.getValue() == null) {
-            statusLbl.setText("Ngày đăng ký không được để trống.");
-        }else if (trangThaiHvTxt.getText().isEmpty()) {
-            statusLbl.setText("Trạng thái không được để trống.");
+    public void setUpdataDataUI(String newTitle, String newValueAddBtn, String newValueCancelBtn, HocVien hocVien){
+        this.titleChucNangLbl.setText(newTitle);
+        this.addHvBtn.setText(newValueAddBtn);
+        this.clearBtn.setText(newValueCancelBtn);
+        this.maHvTxt.setText(hocVien.getMaHV());
+        this.tenHvTxt.setText(hocVien.getHoTenHV());
+        this.ngaySinhHvDatePicker.setValue(hocVien.getNgaySinhHV());
+        this.emailHvTxt.setText(hocVien.getEmailHV());
+        this.sdtHvTxt.setText(hocVien.getSdtHV());
+        this.diaChiHvTxt.setText(hocVien.getDiaChiHV());
+        this.lopHocComboBox.setPromptText(hocVien.getMaLop().getMaLop());
+        this.trangThaiHvCbb.setPromptText(hocVien.getTrangThaiHV());
+        if("Nam".equals(hocVien.getGioiTinhHV())){
+            this.femaleRadioBtn.setSelected(false);
+            this.maleRadioBtn.setSelected(true);
+        }else{
+            this.femaleRadioBtn.setSelected(true);
+            this.maleRadioBtn.setSelected(false);
         }
     }
 
 
+    public void clearData(){
+        this.maHvTxt.clear();
+        this.tenHvTxt.clear();
+        this.sdtHvTxt.clear();
+        this.emailHvTxt.clear();
+        this.diaChiHvTxt.clear();
+        this.lopHocComboBox.setPromptText(valueLopHocCbb);
+        this.trangThaiHvCbb.setPromptText(valueTrangThaiHvCbb);
+        this.maleRadioBtn.setSelected(false);
+        this.femaleRadioBtn.setSelected(false);
+        this.ngaySinhHvDatePicker.setValue(null);
+    }
 
+    /** Interface dùng để lắng nghe sự kiện click */
+    public interface OnLoadDataListener{
+        void onLoadData();
+    }
+
+    private OnLoadDataListener onLoadDataListener;
+    public void setOnLoadDataListener(OnLoadDataListener listener){
+        this.onLoadDataListener = listener;
+    }
+
+    public void messageSuccess(String title, String headerText){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.showAndWait();
+    }
+
+    public void messageError(String title, String headerText){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.showAndWait();
+    }
+
+    public void messageWarning(String title, String headerText){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.showAndWait();
+    }
+    protected void changeColorBtn() {
+        this.addHvBtn.setOnMouseEntered((event) -> {
+            this.addHvBtn.setStyle(this.btnEffect1+this.font);
+        });
+
+        this.addHvBtn.setOnMouseExited((event) -> {
+            this.addHvBtn.setStyle(this.format+this.font);
+        });
+
+        this.clearBtn.setOnMouseEntered((event) -> {
+            this.clearBtn.setStyle(this.btnEffect2+this.font);
+        });
+
+        this.clearBtn.setOnMouseExited((event) -> {
+            this.clearBtn.setStyle(this.bg_red+this.font);
+        });
+    }
 }

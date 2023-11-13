@@ -1,0 +1,28 @@
+.margin-top{
+      -fx-spacing: 100px;
+}
+
+.logoTitleHb{
+    -fx-background-color:#03003f;
+
+}
+
+.titleQuanLy{
+     -fx-background-color:#F4D03F; /* Đặt màu nền cho nút */
+    -fx-font-size:24px;
+    -fx-font-weight:800;
+    -fx-text-fill:#002335;
+}
+
+.leftVb{
+    -fx-background-color:#F1EF90;
+    -fx-text-fill:#FFFFFF ;
+    -fx-font-size:18px;
+    -fx-font-weight:500;
+}
+
+.searchHVBtn{
+    -fx-background-color:#017145;
+        -fx-text-fill:#FFFFFF ;
+        -fx-font-size:18px;
+}

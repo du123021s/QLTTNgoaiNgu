@@ -17,8 +17,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 
-public class ChucNangConGV extends Application {
+public class ChucNangConGV{
     private VBox chucNangHvVb;
+    public Stage stage;
     public TextField maGvTxt, tenGvTxt, gioiTinhGvTxt,  sdtGvTxt, emailGvTxt, chuyennganhGvTxt,kinhnghiemgdGvTxt,matkhauGvTxt,avatarGvTxt, trangThaiGvTxt;
     public Button addHvBtn;
     public TextArea diaChiGvTxt;
@@ -36,13 +37,9 @@ public class ChucNangConGV extends Application {
 
     private String titleFormat = "-fx-background-color: #030063; -fx-text-fill: #FFFFFF; -fx-font-weight:800;-fx-font-size:20px; ";
 
-    public static void main(String[] agrs){launch(); }
-    @Override
-    public void start(Stage stage) throws Exception {
-        showWindow();
-    }
 
-    void showWindow(){
+    public ChucNangConGV(){
+        this.stage = stage;
         maGvTxt = new TextField();
         tenGvTxt = new TextField();
         sdtGvTxt = new TextField();
