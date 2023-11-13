@@ -1,2 +1,5 @@
-package model;public class EventInterface {
+package model;
+
+public interface EventInterface {
+
 }

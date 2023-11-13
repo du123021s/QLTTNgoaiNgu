@@ -98,4 +98,8 @@ public class LopHoc {
     public void setLichHoc(LichHoc lichHoc) {
         this.lichHoc = lichHoc;
     }
+
+    public String toString(){
+        return this.maLop;
+    }
 }

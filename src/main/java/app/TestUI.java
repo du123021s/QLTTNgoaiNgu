@@ -6,15 +6,21 @@
 
 package app;
 
+import controller.AdminController;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import model.HocVien;
+import view.AdminUI;
 
-import service.ConnectMySQLServer;
+public class TestUI extends Application {
+    public static void main(String[] args){launch();}
+    @Override
+    public void start(Stage primaryState) throws Exception {
+        HocVien model = new HocVien();
+        AdminUI view = new AdminUI(primaryState);
+        AdminController controller = new AdminController(model, view);
 
-public class TestUI {
-
-    public static void main(String[] agrs){
-        /** Dòng này gọi đến class để kết nối với database; Đây chỉ là dòng lệnh mẫu
-         * để test thử việc kết nối đến database;
-         */
-        ConnectMySQLServer test = new ConnectMySQLServer();
+        controller.loadData();
+        view.show();
     }
 }

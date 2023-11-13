@@ -21,14 +21,14 @@ public class ConnectMySQLServer {
     public Connection connectDB = null ;
     private final String url = "jdbc:mysql://localhost:3306/qlttnn";
     private final String user = "root";
-    private final String password = "20052002";
+    private final String password = "Nhansu123@";
 
     public ConnectMySQLServer(){
         try {
             connectDB = DriverManager.getConnection(url, user, password);
-            if(connectDB != null){
-                JOptionPane.showMessageDialog(null, "Connection successful.");
-            }
+//            if(connectDB != null){
+//                JOptionPane.showMessageDialog(null, "Connection successful.");
+//            }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Connection failed.\n" + e);
         }

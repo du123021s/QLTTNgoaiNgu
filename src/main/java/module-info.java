@@ -11,4 +11,10 @@ module qlttnn_4_11 {
     opens view;
     exports view;
 
+    opens model;
+    exports model;
+
+    opens app;
+    exports app;
+
 }
