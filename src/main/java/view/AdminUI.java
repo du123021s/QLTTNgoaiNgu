@@ -170,14 +170,14 @@ public class AdminUI extends Application {
     private void moveToLichHocUI() {
         lichHocBtn.setOnAction(event -> {
             LichHocUI lichHocUI = new LichHocUI();
-            lichHocUI.setCenter(lichHocUI);
+            rootBp.setCenter(lichHocUI);
         });
     }
 
     private void moveToLopHoc() {
         lophocBtn.setOnAction(event -> {
             LopHocUI lopHocUI = new LopHocUI();
-            lopHocUI.setCenter(lopHocUI);
+            rootBp.setCenter(lopHocUI);
         });
 
     }

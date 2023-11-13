@@ -1,15 +1,27 @@
 package model;
+import service.ConnectMySQLServer;
+
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class LoaiTaiLieu {
-    private String maLTL;
+    private String maLoaiTL;
     private String ten;
 
-    public String getMaLTL() {
-        return maLTL;
+    public LoaiTaiLieu() {
     }
 
-    public void setMaLTL(String maLTL) {
-        this.maLTL = maLTL;
+    public LoaiTaiLieu(String maLoaiTL, String tenTL) {
+        this.maLoaiTL = maLoaiTL;
+        this.ten = tenTL;
+    }
+
+    public String getMaLoaiTL() {
+        return maLoaiTL;
+    }
+
+    public void setMaLoaiTL(String maLoaiTL) {
+        this.maLoaiTL = maLoaiTL;
     }
 
     public String getTen() {

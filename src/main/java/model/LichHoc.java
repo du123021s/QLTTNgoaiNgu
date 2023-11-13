@@ -3,36 +3,31 @@ package model;
 import java.time.LocalDate;
 
 public class LichHoc {
-    private LocalDate thoiGianHoc;
+    private String thoiGianHoc;
 
-    private PhongHoc phongHoc;
+    private String maPhong;
     private String thuTrongTuan;
-    private LopHoc lopHoc;
+    private String maLop;
+    private String trangthai;
+    private int STT;
 
     public LichHoc() {
     }
 
-    public LichHoc(LocalDate thoiGianHoc, PhongHoc phongHoc, String thuTrongTuan, LopHoc lopHoc) {
-        this.thoiGianHoc = thoiGianHoc;
-        this.phongHoc = phongHoc;
-        this.thuTrongTuan = thuTrongTuan;
-        this.lopHoc = lopHoc;
-    }
-
-    public LocalDate getThoiGianHoc() {
+    public String getThoiGianHoc() {
         return thoiGianHoc;
     }
 
-    public void setThoiGianHoc(LocalDate thoiGianHoc) {
+    public void setThoiGianHoc(String thoiGianHoc) {
         this.thoiGianHoc = thoiGianHoc;
     }
 
-    public PhongHoc getPhongHoc() {
-        return phongHoc;
+    public String getMaPhong() {
+        return maPhong;
     }
 
-    public void setPhongHoc(PhongHoc phongHoc) {
-        this.phongHoc = phongHoc;
+    public void setMaPhong(String maPhong) {
+        this.maPhong = maPhong;
     }
 
     public String getThuTrongTuan() {
@@ -43,11 +38,27 @@ public class LichHoc {
         this.thuTrongTuan = thuTrongTuan;
     }
 
-    public LopHoc getLopHoc() {
-        return lopHoc;
+    public String getMaLop() {
+        return maLop;
     }
 
-    public void setLopHoc(LopHoc lopHoc) {
-        this.lopHoc = lopHoc;
+    public void setMaLop(String maLop) {
+        this.maLop = maLop;
+    }
+
+    public String getTrangthai() {
+        return trangthai;
+    }
+
+    public void setTrangthai(String trangthai) {
+        this.trangthai = trangthai;
+    }
+
+    public void setSTT(int STT) {
+        this.STT = STT;
+    }
+
+    public int getSTT() {
+        return STT;
     }
 }
