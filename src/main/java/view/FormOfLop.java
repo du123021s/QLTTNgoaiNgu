@@ -1,5 +1,6 @@
 package view;
 
+import controller.LopHocController;
 import controller.PhongHocController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -14,7 +15,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.LopHoc;
-import service.PhongHocService;
+import service.LopHocService;
 
 import java.sql.Date;
 
@@ -24,7 +25,7 @@ public class FormOfLop extends Application {
 
     private Label tilePhong;
     private LopHoc lopHoc;
-   // private LopHocController lopHocController;
+    private LopHocController lopHocController;
 
     private String font = "-fx-font-size:20px; ";
     private Integer size = 30;
@@ -174,30 +175,30 @@ public class FormOfLop extends Application {
         }
     }
 
-//    private void saveHandler(){
-//        System.out.println("cÓ Nha.");
-//        statusLbl.setStyle("-fx-text-fill:red; -fx-font-size:16px");
-//        statusLbl.setPadding(new Insets(15));
-//        statusLbl.setText(""); // Đặt lại nội dung của statusLbl trước khi kiểm tra
-//
-//        PhongHocService phongHocService = new PhongHocService();
-//        if (maPhongtxt.getText().isEmpty()) {
-//            statusLbl.setText("Mã Phòng học không được để trống.");
-//        } else if (phongHocService.getPhongHocById(maPhongtxt.getText())!=0&&phongHoc==null) {
-//            statusLbl.setText("Mã Phòng học đã tồn tại.");
-//        } else if (trangthaitxt.getText().isEmpty()) {
-//            statusLbl.setText("Trạng thái Phòng học không được để trống.");
-//        }else {
-//            PhongHoc phongHoc1 = new PhongHoc();
-//            phongHoc1.setMaPhong(maPhongtxt.getText());
-//            phongHoc1.setTrangthai(trangthaitxt.getText());
-//            if(phongHoc ==null){
-//                phongHocController = new PhongHocController();
-//                phongHocController.create(phongHoc1);
-//            }else {
-//                phongHocController = new PhongHocController();
-//                phongHocController.update(phongHoc1);
-//            }
-//        }
-//    }
+    private void saveHandler(){
+        System.out.println("cÓ Nha.");
+        statusLbl.setStyle("-fx-text-fill:red; -fx-font-size:16px");
+        statusLbl.setPadding(new Insets(15));
+        statusLbl.setText(""); // Đặt lại nội dung của statusLbl trước khi kiểm tra
+
+        LopHocService lopHocService = new LopHocService();
+        if (maLoptxt.getText().isEmpty()) {
+            statusLbl.setText("Mã Lớp học không được để trống.");
+        } else if (lopHocService.getLopHocById(maLoptxt.getText())!=0&&lopHoc==null) {
+            statusLbl.setText("Mã Lớp học đã tồn tại.");
+        } else if (trangthaitxt.getText().isEmpty()) {
+            statusLbl.setText("Trạng thái Lớp học không được để trống.");
+        }else {
+            LopHoc lopHoc1 = new LopHoc();
+            lopHoc1.setMaLop(maLoptxt.getText());
+            lopHoc1.setTrangThaiLop(trangthaitxt.getText());
+            if(lopHoc ==null){
+                lopHocController = new LopHocController();
+                lopHocController.create(lopHoc1);
+            }else {
+                lopHocController = new LopHocController();
+                lopHocController.update(lopHoc1);
+            }
+        }
+    }
 }
