@@ -188,7 +188,7 @@ public class GiangVienService extends ConnectMySQLServer {
 
             call.executeUpdate();
             connectDB.setAutoCommit(false);
-            connectDB.commit();
+            connectDB.commit() ;
             return 1;
 
         }catch (SQLException e){
