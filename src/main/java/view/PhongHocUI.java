@@ -13,6 +13,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.PhongHoc;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class PhongHocUI extends BorderPane {
 
     private PhongHocController phongHocController = new PhongHocController();
@@ -168,7 +171,7 @@ public class PhongHocUI extends BorderPane {
         this.setCenter(rightVb);
     }
 
-    private void addData(ObservableList<PhongHoc> list){
+    public void addData(ObservableList<PhongHoc> list){
         content.getChildren().clear();
         creatContent(list);
     }
@@ -201,24 +204,41 @@ public class PhongHocUI extends BorderPane {
             Text maP = new Text("Phòng: "+ item.getMaPhong()); maP.setStyle(fontItem);
             Text tenP = new Text(item.getTrangthai());
 
+            AtomicBoolean allow = new AtomicBoolean(true);
             itembox.getChildren().addAll(maP, tenP);
             selectedBox.setGraphic(itembox);
             selectedBox.setStyle("-fx-background-color: #5B9BD5;" +
             "-fx-text-fill: #FFFFFF;");
             selectedBox.setOnMouseEntered(event->{
-                selectedBox.setStyle("-fx-background-color: #9DC3E6;" +
-                        "-fx-text-fill: #FFFFFF;");
+                if (allow.get()){
+                    selectedBox.setStyle("-fx-background-color: #9DC3E6;" +
+                            "-fx-text-fill: #FFFFFF;");
+                }else {
+                    selectedBox.setStyle("-fx-background-color: #9DC3E6;" +
+                            "-fx-text-fill: #FFFFFF; -fx-border-color: red; -fx-border-width: 2px;");
+                }
+
             });
             selectedBox.setOnMouseExited(event->{
-                selectedBox.setStyle("-fx-background-color: #5B9BD5;" +
-                        "-fx-text-fill: #FFFFFF;");
+                if(allow.get()){
+                    selectedBox.setStyle("-fx-background-color: #5B9BD5;" +
+                            "-fx-text-fill: #FFFFFF;");
+                }
+
             });
-            selectedBox.setOnAction(event ->{
-                selectedBox.setStyle("-fx-background-color: #9DC3E6;" +
-                        "-fx-text-fill: #FFFFFF; -fx-border-color: red; -fx-border-width: 2px;");
-                phongHoc = new PhongHoc();
-                phongHoc.setMaPhong(maP.getText().replace("Phòng: ",""));
-                phongHoc.setTrangthai(tenP.getText());
+            selectedBox.setOnMouseClicked(event ->{
+                if(allow.get()){
+                    allow.set(false);
+                    selectedBox.setStyle("-fx-background-color: #9DC3E6;" +
+                            "-fx-text-fill: #FFFFFF; -fx-border-color: red; -fx-border-width: 2px;");
+                    phongHoc = new PhongHoc();
+                    phongHoc.setMaPhong(maP.getText().replace("Phòng: ",""));
+                    phongHoc.setTrangthai(tenP.getText());
+                }else {
+                    allow.set(true);
+                    phongHoc = null;
+                }
+
             });
 
             rowbox.getChildren().add(selectedBox);

@@ -120,4 +120,21 @@ public class LoaiTLService extends ConnectMySQLServer{
         }
 //        return 0;
     }
+
+    public int getLoaiById(String id){
+        String sql = "SELECT Count(*) FROM loaitailieu WHERE maLoaiTaiLieu=?";
+        try {
+            PreparedStatement ps =connectDB.prepareStatement(sql);
+            ps.setString(1,id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
 }

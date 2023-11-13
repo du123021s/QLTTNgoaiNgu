@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.LoaiTaiLieu;
 import model.TaiLieu;
+import service.LoaiTLService;
 
 import static javafx.application.Application.launch;
 
@@ -145,9 +146,12 @@ public class FormOfLoaiTL extends Application {
         statusLbl.setPadding(new Insets(15));
         statusLbl.setText(""); // Đặt lại nội dung của statusLbl trước khi kiểm tra
 
+        LoaiTLService loaiTLService = new LoaiTLService();
         if (maLoaiTxt.getText().isEmpty()) {
             statusLbl.setText("Mã Loại Tài liệu không được để trống.");
-        }else if (tenLoaitxt.getText().isEmpty()) {
+        } else if (loaiTLService.getLoaiById(maLoaiTxt.getText())!=0&&loaiTaiLieu==null) {
+            statusLbl.setText("Mã Loại Tài liệu đã tồn tại.");
+        } else if (tenLoaitxt.getText().isEmpty()) {
             statusLbl.setText("Tên Loại Tài liệu không được để trống.");
         }else {
             LoaiTaiLieu loaiTaiLieu1 = new LoaiTaiLieu();

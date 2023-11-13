@@ -7,21 +7,9 @@ public class TaiLieu {
     private String ten;
     private BigDecimal gia;
     private String nguon;
+    private String trangThai;
     private String mota;
     private String maLoaiTL;
-
-    public TaiLieu(String maTaiLieu, String ten, float gia, String nguon, String mota, String maLoaiTL) {
-        this.maTaiLieu = maTaiLieu;
-        this.ten = ten;
-        this.gia = BigDecimal.valueOf(gia);
-        this.nguon = nguon;
-        this.mota = mota;
-        this.maLoaiTL = maLoaiTL;
-    }
-
-    public TaiLieu() {
-
-    }
 
     public String getMaTaiLieu() {
         return maTaiLieu;
@@ -43,8 +31,8 @@ public class TaiLieu {
         return gia;
     }
 
-    public void setGia(float gia) {
-        this.gia = BigDecimal.valueOf(gia);
+    public void setGia(BigDecimal gia) {
+        this.gia = gia;
     }
 
     public String getNguon() {
@@ -53,6 +41,14 @@ public class TaiLieu {
 
     public void setNguon(String nguon) {
         this.nguon = nguon;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
     }
 
     public String getMota() {

@@ -128,4 +128,28 @@ public class LichHocService extends ConnectMySQLServer {
 
         return 0;
     }
+
+    public int getLichHocById(LichHoc lichHoc){
+        String malop = lichHoc.getMaLop();
+        String maphong = lichHoc.getMaPhong();
+        String thu =  lichHoc.getThuTrongTuan();
+        String shift = lichHoc.getThoiGianHoc();
+        String sql = "SELECT Count(*) FROM lichhoc WHERE maLop=? AND maPhongHoc=? AND Thu=? AND shift=?";
+        try {
+            PreparedStatement ps =connectDB.prepareStatement(sql);
+            ps.setString(1,malop);
+            ps.setString(2,maphong);
+            ps.setString(3,thu);
+            ps.setString(4,shift);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
 }

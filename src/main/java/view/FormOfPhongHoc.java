@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.LoaiTaiLieu;
 import model.PhongHoc;
+import service.PhongHocService;
 
 public class FormOfPhongHoc extends Application {
     private TextField maPhongtxt;
@@ -142,9 +143,12 @@ public class FormOfPhongHoc extends Application {
         statusLbl.setPadding(new Insets(15));
         statusLbl.setText(""); // Đặt lại nội dung của statusLbl trước khi kiểm tra
 
+        PhongHocService phongHocService = new PhongHocService();
         if (maPhongtxt.getText().isEmpty()) {
             statusLbl.setText("Mã Phòng học không được để trống.");
-        }else if (trangthaitxt.getText().isEmpty()) {
+        } else if (phongHocService.getPhongHocById(maPhongtxt.getText())!=0&&phongHoc==null) {
+            statusLbl.setText("Mã Phòng học đã tồn tại.");
+        } else if (trangthaitxt.getText().isEmpty()) {
             statusLbl.setText("Trạng thái Phòng học không được để trống.");
         }else {
             PhongHoc phongHoc1 = new PhongHoc();

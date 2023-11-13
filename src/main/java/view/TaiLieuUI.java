@@ -132,6 +132,7 @@ public class TaiLieuUI extends BorderPane {
         TableColumn<TaiLieu, String> nguon = new TableColumn<>("Nguồn");
         TableColumn<TaiLieu, String> mota = new TableColumn<>("Mô tả");
         TableColumn<TaiLieu, String> maLTL = new TableColumn<>("Mã loại tài liệu");
+        TableColumn<TaiLieu, String> trangthai = new TableColumn<>("Trạng thái");
 
         sttTL.setStyle(font18);
         maTL.setStyle(font18);
@@ -140,12 +141,13 @@ public class TaiLieuUI extends BorderPane {
         nguon.setStyle(font18);
         mota.setStyle(font18);
         maLTL.setStyle(font18);
+        trangthai.setStyle(font18);
 
         taiLieuController = new TaiLieuController();
         ObservableList data = taiLieuController.getAll();
         addTableData(data);
 
-        taiLieuTable.getColumns().addAll(sttTL, maTL, tenTL, gia, nguon, mota,maLTL);
+        taiLieuTable.getColumns().addAll(sttTL, maTL, tenTL, gia, nguon, mota,maLTL, trangthai);
 
         // set : thiết lập cách dữ liệu của một cột được hiển thị
         // cách mà một đối tượng dữ liệu trích xuất và hiển thị.
@@ -181,6 +183,7 @@ public class TaiLieuUI extends BorderPane {
         nguon.setCellValueFactory(new PropertyValueFactory<>("nguon"));
         mota.setCellValueFactory(new PropertyValueFactory<>("mota"));
         maLTL.setCellValueFactory(new PropertyValueFactory<>("maLoaiTL"));
+        trangthai.setCellValueFactory(new PropertyValueFactory<>("trangThai"));
 
 
 

@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.TaiLieu;
 import service.LoaiTLService;
+import service.TaiLieuService;
 
 import javax.swing.*;
 import java.math.BigDecimal;
@@ -24,7 +25,7 @@ public class FormOfTaiLieu extends Application {
     private TaiLieuController taiLieuController;
     private TaiLieu taiLieu;
     private VBox formofTL;
-    private TextField maTLTxt, tenTLTxt, giaTxt,  nguonTxt;
+    private TextField maTLTxt, tenTLTxt, giaTxt,  nguonTxt, trangthaitxt;
     private Button cancelBtn;
 
     private TextArea  motaTxt;
@@ -56,6 +57,7 @@ public class FormOfTaiLieu extends Application {
             giaTxt = new TextField();
             nguonTxt = new TextField();
             motaTxt = new TextArea();
+            trangthaitxt = new TextField();
 
         }else {
             maTLTxt = new TextField(taiLieu.getMaTaiLieu());
@@ -64,7 +66,7 @@ public class FormOfTaiLieu extends Application {
             giaTxt = new TextField(String.format("%.0f",taiLieu.getGia()));
             nguonTxt = new TextField(taiLieu.getNguon());
             motaTxt = new TextArea(taiLieu.getMota());
-
+            trangthaitxt = new TextField();
         }
 
 
@@ -102,7 +104,7 @@ public class FormOfTaiLieu extends Application {
         Label nguonLbl = new Label("Nguồn: "); nguonLbl.setStyle(font);
         Label motaLbl = new Label("Mô tả: "); motaLbl.setStyle(font);
         Label LTLLbl = new Label("Loại tài liệu: "); LTLLbl.setStyle(font);
-
+        Label trangthaiLbl = new Label("Trạng thái: "); trangthaiLbl.setStyle(font);
         motaTxt.setPrefRowCount(7);
         motaTxt.setPrefColumnCount(5);
 
@@ -111,7 +113,7 @@ public class FormOfTaiLieu extends Application {
         giaLbl.prefWidthProperty().bind(LTLLbl.widthProperty());
         nguonLbl.prefWidthProperty().bind(LTLLbl.widthProperty());
         motaLbl.prefWidthProperty().bind(LTLLbl.widthProperty());
-
+        trangthaiLbl.prefWidthProperty().bind(LTLLbl.widthProperty());
 
 
         // ===== Căn chỉnh - Align ---------
@@ -120,7 +122,7 @@ public class FormOfTaiLieu extends Application {
         maTLTxt.setMinHeight(size); maTLTxt.setMinWidth(sizeWidth);
         tenTLTxt.setMinHeight(size); tenTLTxt.setMinWidth(sizeWidth);
         nguonTxt.setMinHeight(size); nguonTxt.setMinWidth(sizeWidth);
-
+        trangthaitxt.setMinHeight(size); trangthaitxt.setMinWidth(sizeWidth);
         motaTxt.setMinHeight(size); motaTxt.setMinWidth(sizeWidth);
         giaTxt.setMinHeight(size); giaTxt.setMinWidth(sizeWidth);
         LTLcbb.setMinHeight(size); LTLcbb.setMinWidth(sizeWidth);
@@ -132,6 +134,7 @@ public class FormOfTaiLieu extends Application {
         HBox nguonHb = new HBox();
         HBox motaHb = new HBox();
         HBox LtlHb = new HBox();
+        HBox trangthaiHb = new HBox();
 
         VBox leftVb = new VBox(10);
         VBox rightVb = new VBox(10);
@@ -144,11 +147,12 @@ public class FormOfTaiLieu extends Application {
         nguonHb.getChildren().addAll(nguonLbl, nguonTxt);
         motaHb.getChildren().addAll(motaLbl, motaTxt);
         LtlHb.getChildren().addAll(LTLLbl, LTLcbb);
+        trangthaiHb.getChildren().addAll(trangthaiLbl,trangthaitxt);
 
 
 
         leftVb.getChildren().addAll(maTlHb, tenTlHb, nguonHb, giaHb);
-        rightVb.getChildren().addAll(motaHb,LtlHb);
+        rightVb.getChildren().addAll(motaHb,LtlHb,trangthaiHb);
 
 
 
@@ -233,9 +237,12 @@ public class FormOfTaiLieu extends Application {
         statusLbl.setPadding(new Insets(15));
         statusLbl.setText(""); // Đặt lại nội dung của statusLbl trước khi kiểm tra
 
+        TaiLieuService taiLieuService = new TaiLieuService();
         if (maTLTxt.getText().isEmpty()) {
             statusLbl.setText("Mã Tài liệu không được để trống.");
-        }else if (tenTLTxt.getText().isEmpty()) {
+        } else if (taiLieuService.getTaiLieuById(maTLTxt.getText())!=0&&taiLieu==null) {
+            statusLbl.setText("Mã Tài liệu đã tồn tại.");
+        } else if (tenTLTxt.getText().isEmpty()) {
             statusLbl.setText("Tên Tài liệu không được để trống.");
         }else if (giaTxt.getText().isEmpty()) {
             statusLbl.setText("Giá tài liệu không được để trống.");
@@ -249,8 +256,9 @@ public class FormOfTaiLieu extends Application {
             taiLieu1.setTen(tenTLTxt.getText());
             taiLieu1.setNguon(nguonTxt.getText());
             taiLieu1.setMota(motaTxt.getText());
-            taiLieu1.setGia(Float.parseFloat(giaTxt.getText()));
+            taiLieu1.setGia(BigDecimal.valueOf(Long.parseLong((giaTxt.getText()))));
             taiLieu1.setMaLoaiTL(LTLcbb.getValue().toString());
+            taiLieu1.setTrangThai(trangthaitxt.getText());
 
             taiLieuController = new TaiLieuController();
             if(taiLieu==null) {

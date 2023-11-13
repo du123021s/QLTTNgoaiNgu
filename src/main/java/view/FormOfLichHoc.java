@@ -16,10 +16,7 @@ import javafx.stage.Stage;
 import model.LichHoc;
 import model.Shift;
 import model.TaiLieu;
-import service.LoaiTLService;
-import service.PhongHocService;
-import service.ShiftService;
-import service.ThuService;
+import service.*;
 
 import java.io.InputStream;
 
@@ -257,14 +254,19 @@ public class FormOfLichHoc extends Application {
             lichHoc1.setThoiGianHoc(thoigianCb.getValue().toString().substring(0,2));
             lichHoc1.setTrangthai(trangthaitxt.getText());
             System.out.println(lichHoc1.getThoiGianHoc());
-
-            lichHocController = new LichHocController();
-            if (lichHoc!=null){
-                lichHoc1.setSTT(lichHoc.getSTT());
-                lichHocController.update(lichHoc1);
+            LichHocService lichHocService = new LichHocService();
+            if(lichHocService.getLichHocById(lichHoc1)!=0){
+                statusLbl.setText("Lịch học đã tồn tại.");
             }else {
-                lichHocController.create(lichHoc1);
+                lichHocController = new LichHocController();
+                if (lichHoc!=null){
+                    lichHoc1.setSTT(lichHoc.getSTT());
+                    lichHocController.update(lichHoc1);
+                }else {
+                    lichHocController.create(lichHoc1);
+                }
             }
+
 
         }
     }

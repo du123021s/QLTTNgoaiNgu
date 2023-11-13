@@ -118,4 +118,21 @@ public class PhongHocService extends ConnectMySQLServer{
 
         return data;
     }
+
+    public int getPhongHocById(String id){
+        String sql = "SELECT Count(*) FROM phonghoc WHERE maPhongHoc=?";
+        try {
+            PreparedStatement ps =connectDB.prepareStatement(sql);
+            ps.setString(1,id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
 }

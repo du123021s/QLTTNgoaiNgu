@@ -85,12 +85,17 @@ public class LichHocUI extends BorderPane {
             lichHocController =new LichHocController();
             ObservableList data = lichHocController.getAll();
             addTableData(data);
+            lichHocTable.refresh();
         });
         addTlBtn = new Button("Thêm");
         addTlBtn.setOnAction(event ->{
             lichHocController  = new LichHocController();
             try {
                 lichHocController.showCreateForm();
+                ObservableList data = lichHocController.getAll();
+                addTableData(data);
+                lichHocTable.refresh();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -1,5 +1,4 @@
 package model;
-
 import service.ConnectMySQLServer;
 
 import java.sql.SQLException;
